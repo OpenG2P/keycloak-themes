@@ -17,7 +17,8 @@
   --input-text:        #1a1a1a;
   --input-placeholder: #9ca3af;
   --error:             #ff5e5e;
-  --font-slab:         'Roboto', sans-serif;
+  --font-hero:         'Roboto Slab', Georgia, serif;  /* hero title only */
+  --font-card:         'Roboto', sans-serif;           /* login card elements */
   --font-body:         'DM Sans', sans-serif;
   --radius-sm:         6px;
   --radius-md:         12px;
@@ -93,9 +94,9 @@ a:hover { color: var(--accent-gold-light); }
   flex-direction: column;
 }
 
-/* "G2P Advisor" hero title — Roboto Slab, 600, 48px */
+/* Hero title — Roboto Slab, 600, 48px */
 .kc-hero-title {
-  font-family: var(--font-slab);
+  font-family: var(--font-hero);
   font-size: 48px;
   font-weight: 600;
   line-height: 1.15;
@@ -151,9 +152,9 @@ a:hover { color: var(--accent-gold-light); }
 .kc-card-logo-wrap { margin-bottom: 10px; }
 .kc-card-logo { width: 52px; height: 52px; object-fit: contain; }
 
-/* "G2P Advisor" on card — Roboto, 600, 28px */
+/* Card title — Roboto, 600, 28px */
 .kc-card-title {
-  font-family: var(--font-slab);
+  font-family: var(--font-card);
   font-size: 28px;
   font-weight: 600;
   color: var(--text-primary);
@@ -161,9 +162,9 @@ a:hover { color: var(--accent-gold-light); }
   text-align: center;
 }
 
-/* "Hello! Login your account" — Roboto, 500, 20px */
+/* Card subtitle — Roboto, 500, 20px */
 .kc-card-subtitle {
-  font-family: var(--font-slab);
+  font-family: var(--font-card);
   font-size: 20px;
   font-weight: 500;
   color: var(--accent-gold);
@@ -180,7 +181,7 @@ form { width: 100%; }
 /* Field labels — Roboto, 500, 16px */
 .kc-label {
   display: block;
-  font-family: var(--font-slab);
+  font-family: var(--font-card);
   font-size: 16px;
   font-weight: 500;
   color: var(--text-primary);
@@ -257,7 +258,7 @@ form { width: 100%; }
   padding: 14px;
   background: var(--accent-gold);
   color: #000;
-  font-family: var(--font-slab);
+  font-family: var(--font-card);
   font-size: 16px;
   font-weight: 500;
   border: none;
@@ -282,7 +283,7 @@ a.kc-btn-primary { margin-top: 12px; }
   display: block; width: 100%;
   padding: 12px; margin-top: 10px;
   background: #2a2a2a; color: var(--text-secondary);
-  font-family: var(--font-slab); font-size: 15px; font-weight: 500;
+  font-family: var(--font-card); font-size: 15px; font-weight: 500;
   border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-md);
   cursor: pointer; text-align: center;
   transition: background 0.2s, color 0.2s;

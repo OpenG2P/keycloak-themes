@@ -6,3 +6,7 @@
 *.swp
 *.swo
 .idea/
+
+# Temp/patch files
+*.patch
+*.head
