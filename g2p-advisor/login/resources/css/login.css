@@ -133,6 +133,7 @@ a:hover { color: var(--accent-gold-light); }
 .kc-login-card {
   flex: 0 0 auto;
   width: 430px;
+  margin-right: 50px;
   background: var(--bg-card);
   border: 1px solid var(--bg-card-border);
   border-radius: var(--radius-lg);
@@ -377,7 +378,7 @@ a.kc-btn-primary { margin-top: 12px; }
   .kc-hero-section { max-width: 100%; text-align: center; padding: 0; align-items: center; }
   .kc-hero-subtitle { max-width: 100%; }
   .kc-hero-illustration { display: none; }
-  .kc-login-card { width: 100%; max-width: 440px; }
+  .kc-login-card { width: 100%; max-width: 440px; margin-right: 0; }
   .kc-login-card--narrow { width: 100%; }
 }
 
