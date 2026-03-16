@@ -17,7 +17,7 @@
   --input-text:        #1a1a1a;
   --input-placeholder: #9ca3af;
   --error:             #ff5e5e;
-  --font-slab:         'Roboto Slab', Georgia, serif;
+  --font-slab:         'Roboto', sans-serif;
   --font-body:         'DM Sans', sans-serif;
   --radius-sm:         6px;
   --radius-md:         12px;
@@ -60,7 +60,6 @@ a:hover { color: var(--accent-gold-light); }
   line-height: 0;
 }
 
-/* Full-width OpenG2P logo in header — constrain height, let width auto-scale */
 .kc-header-logo-full {
   height: 36px;
   width: auto;
@@ -81,7 +80,6 @@ a:hover { color: var(--accent-gold-light); }
   padding-right: 80px;
 }
 
-/* Centered variant for error/otp/verify/expired pages */
 .kc-page-container--centered {
   justify-content: center;
 }
@@ -90,7 +88,7 @@ a:hover { color: var(--accent-gold-light); }
 .kc-hero-section {
   flex: 1 1 0;
   max-width: 540px;
-  padding: 40px 0 40px 130px;
+  padding: 40px 0 40px 100px;
   display: flex;
   flex-direction: column;
 }
@@ -139,7 +137,6 @@ a:hover { color: var(--accent-gold-light); }
   padding: 40px 36px;
 }
 
-/* Narrow variant for single-purpose pages */
 .kc-login-card--narrow {
   width: 400px;
   max-width: 100%;
@@ -151,11 +148,10 @@ a:hover { color: var(--accent-gold-light); }
   align-items: center;
 }
 
-/* Card logo (small favicon mark) */
 .kc-card-logo-wrap { margin-bottom: 10px; }
 .kc-card-logo { width: 52px; height: 52px; object-fit: contain; }
 
-/* "G2P Advisor" on card — Roboto Slab, 600, 28px */
+/* "G2P Advisor" on card — Roboto, 600, 28px */
 .kc-card-title {
   font-family: var(--font-slab);
   font-size: 28px;
@@ -165,7 +161,7 @@ a:hover { color: var(--accent-gold-light); }
   text-align: center;
 }
 
-/* "Hello! Login your account" — Roboto Slab, 500, 20px */
+/* "Hello! Login your account" — Roboto, 500, 20px */
 .kc-card-subtitle {
   font-family: var(--font-slab);
   font-size: 20px;
@@ -181,7 +177,7 @@ form { width: 100%; }
 
 .kc-form-group { margin-bottom: 18px; width: 100%; }
 
-/* Field labels — Roboto Slab, 500, 16px */
+/* Field labels — Roboto, 500, 16px */
 .kc-label {
   display: block;
   font-family: var(--font-slab);
@@ -254,7 +250,7 @@ form { width: 100%; }
 .kc-forgot-link { font-size: 0.85rem; color: var(--text-primary); }
 .kc-forgot-link:hover { color: var(--accent-gold); }
 
-/* ---------- Primary button — Roboto Slab, 500, 16px ---------- */
+/* ---------- Primary button — Roboto, 500, 16px ---------- */
 .kc-btn-primary {
   display: block;
   width: 100%;
