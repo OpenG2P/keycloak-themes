@@ -1,0 +1,473 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&family=Roboto+Slab:wght@600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── RESET KEYCLOAK / PATTERNFLY ─────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+  background: #000000;
+  color: #ffffff;
+}
+
+#kc-header,
+#kc-header-wrapper,
+.login-pf-header,
+.login-pf-page-header,
+#kc-page-title,
+.kc-logo-text {
+  display: none !important;
+}
+
+.login-pf-page-header::before,
+.login-pf-page-header::after {
+  display: none !important;
+}
+
+.login-pf-page {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.login-pf {
+  padding-top: 0 !important;
+  background: #000000 !important;
+}
+
+.card-pf {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+#kc-content,
+#kc-content-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── PAGE WRAPPER ────────────────────────────────────────────────────── */
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #000000;
+}
+
+/* ── CONTENT WRAPPER ────────────────────────────────────────────────── */
+
+.content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 45px 120px;
+}
+
+/* ── LEFT PANEL ─────────────────────────────────────────────────────── */
+
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.left-panel h1 {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin: 0 0 24px 0;
+  color: #ffffff;
+}
+
+.description {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 32px 0;
+  max-width: 520px;
+  color: #ffffff;
+}
+
+/* ── GET IN TOUCH BUTTON ─────────────────────────────────────────────── */
+.contact-btn {
+  width: 166px;
+  height: 52px;
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  background: #e9bc19;
+  border: none;
+
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+
+  color: #000000;
+  cursor: pointer;
+  margin-bottom: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes arrow right */
+}
+
+/* Arrow circle */
+.contact-btn .arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVG image */
+.contact-btn .arrow img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* ── ILLUSTRATION IMAGE ──────────────────────────────────────────────── */
+
+.left-image {
+  width: 490px;
+  height: 377px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── RIGHT PANEL ─────────────────────────────────────────────────────── */
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 65px;
+}
+
+/* ── LOGIN CARD ──────────────────────────────────────────────────────── */
+
+.login-card {
+  width: 500px;
+  padding: 40px 60px;
+  border-radius: 30px;
+  text-align: center;
+  color: #000000;
+  border: 1px solid #634e3f;
+  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+.logo {
+  width: 46px;
+  height: 46px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.title {
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 32px 0;
+  color: #e9bc19 !important;
+}
+
+/* ── FORM FIELDS ─────────────────────────────────────────────────────── */
+
+.field {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.field label {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 3px;
+  display: block;
+  color: #ffffff;
+}
+
+.field input {
+  width: 100%;
+  height: 50px;
+  padding: 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 16px;
+  background: #ffffff;
+  color: #000000;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.forgot-password-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.forgot-password-link {
+  font-family: Roboto;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.forgot-password-link:hover {
+  color: #0084ff;
+  text-decoration: none;
+}
+
+.forgot-password-link:focus,
+.forgot-password-link:active,
+.forgot-password-link:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ── LOGIN BUTTON ────────────────────────────────────────────────────── */
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: #e9bc19;
+  color: #000000;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.login-btn:hover {
+  background: #fac504;
+}
+
+.right-panel--forgot {
+  padding: 40px 65px;
+}
+
+.login-card--forgot {
+  width: 500px;
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+/* ── TITLE + TEXT ────────────────────────────── */
+.login-card--forgot .title {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.login-card--forgot .subtitle {
+  font-size: 16px;
+  margin-bottom: 28px;
+  color: #e9bc19;
+}
+
+/* ── FIELD ───────────────────────────────────── */
+.login-card--forgot .field {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.login-card--forgot .field label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
+
+.login-card--forgot .field input {
+  width: 100%;
+  height: 50px;
+  padding: 14px 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
+
+  font-size: 14px;
+  outline: none;
+}
+
+/* ── ERROR ───────────────────────────────────── */
+.field-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 12px;
+}
+
+/* ── BUTTON ──────────────────────────────────── */
+.login-card--forgot .login-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+
+  background: #e9bc19;
+  color: #000000;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-card--forgot .login-btn:hover {
+  background: #d4a915;
+}
+
+/* ── BACK LINK ───────────────────────────────── */
+.back-to-login {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.back-to-login a {
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.back-to-login a:hover {
+  color: #0355e2;
+  text-decoration: none;
+}
+
+/* ── UPDATE PASSWORD PANEL ───────────────────── */
+.right-panel--update-password {
+  padding: 40px 65px;
+}
+
+/* ── CARD VARIANT ────────────────────────────── */
+.login-card--update {
+  width: 500px;
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+/* TEXT */
+.login-card--update .title {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.login-card--update .subtitle {
+  font-size: 16px;
+  margin-bottom: 28px;
+  color: #e9bc19;
+}
+
+/* FIELDS */
+.login-card--update .field {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.login-card--update .field label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
+
+.login-card--update .field input {
+  width: 100%;
+  height: 50px;
+  padding: 14px 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
+
+  font-size: 14px;
+  outline: none;
+}
+
+.login-card--update .field input:focus {
+  border-color: #e9bc19;
+}
+
+/* ERROR */
+.login-card--update .field-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 12px;
+}
+
+/* BUTTON */
+.login-card--update .login-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+
+  background: #e9bc19;
+  color: #000000;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-card--update .login-btn:hover {
+  background: #d4a915;
+}
