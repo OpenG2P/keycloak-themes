@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- ✅ Your custom title -->
     <title>Staff Portal</title>
     <!-- OR dynamic -->
     <!-- <title>${msg("loginTitle", "Staff Portal")}</title> -->
@@ -19,7 +18,6 @@
         </#list>
     </#if>
 
-    <!-- Your custom CSS -->
     <link href="${url.resourcesPath}/css/styles.css" rel="stylesheet" />
 </head>
 

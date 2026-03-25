@@ -126,7 +126,7 @@ body {
 
   display: flex;
   align-items: center;
-  justify-content: space-between; /* pushes arrow right */
+  justify-content: space-between;
 }
 
 /* Arrow circle */
@@ -219,28 +219,28 @@ body {
   font-weight: 500;
 }
 
-/* ✅ Success */
+/* Success */
 .custom-message.success {
   color: #166534;
   background-color: #dcfce7;
   border: 1px solid #86efac;
 }
 
-/* ❌ Error */
+/* Error */
 .custom-message.error {
   color: #991b1b;
   background-color: #fee2e2;
   border: 1px solid #fca5a5;
 }
 
-/* ℹ️ Info */
+/* Info */
 .custom-message.info {
   color: #1e40af;
   background-color: #dbeafe;
   border: 1px solid #93c5fd;
 }
 
-/* ⚠️ Warning (NEW) */
+/* Warning */
 .custom-message.warning {
   color: #92400e;
   background-color: #fef3c7;
@@ -335,7 +335,7 @@ body {
   justify-content: center;
   gap: 6px;
   font-size: 16px;
-  color: #ffffff; /* subtle gray */
+  color: #ffffff;
 }
 
 .powered-logo {
@@ -531,13 +531,6 @@ body {
 .login-card--update .login-btn:hover {
   background: #d4a915;
 }
-
-
-/* ═══════════════════════════════════════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-   All original styles above are untouched. Media queries below override
-   only what needs to change at each breakpoint.
-   ═══════════════════════════════════════════════════════════════════════ */
 
 /* ── LARGE DESKTOP  (≤1280px) ────────────────────────────────────────── */
 @media (max-width: 1280px) {
