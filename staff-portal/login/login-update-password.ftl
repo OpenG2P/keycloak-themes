@@ -12,7 +12,7 @@
           <h1>Welcome to OpenG2P</h1>
 
           <p class="description">
-            OpenG2P enables governments and humanitarian organisations to deliver critical social benefits directly to those who need them.
+            A one-stop platform to access OpenG2P's modules and functionalities.
           </p>
 
           <button class="contact-btn" onclick="window.open('https://www.openg2p.org/', '_blank')">
@@ -39,10 +39,10 @@
                 class="logo"
             />
 
-            <h2 class="title">Set New Password</h2>
+            <h2 class="title">Staff Portal</h2>
 
             <p class="subtitle">
-            Enter your new password below
+              Update your password
             </p>
 
             <#if message?has_content>

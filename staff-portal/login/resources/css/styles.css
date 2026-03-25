@@ -105,6 +105,7 @@ body {
   margin: 0 0 32px 0;
   max-width: 520px;
   color: #ffffff;
+  opacity: 0.7;
 }
 
 /* ── GET IN TOUCH BUTTON ─────────────────────────────────────────────── */
@@ -176,14 +177,23 @@ body {
   text-align: center;
   color: #000000;
   border: 1px solid #634e3f;
-  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
   background: radial-gradient(
     circle at 0% 100%,
     rgba(233, 188, 25, 0.4) 0%,
     rgba(233, 188, 25, 0.25) 25%,
     rgba(233, 188, 25, 0.12) 40%,
     transparent 55%
-  );
+  ); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
 }
 
 .logo {
@@ -197,7 +207,7 @@ body {
   font-family: Roboto;
   font-size: 28px;
   font-weight: 600;
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
   color: #ffffff;
 }
 
@@ -212,7 +222,7 @@ body {
 .custom-message {
   margin: 0 0 16px 0;
   padding: 10px 6px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4;
   text-align: center;
   border-radius: 10px;
@@ -221,30 +231,26 @@ body {
 
 /* Success */
 .custom-message.success {
-  color: #166534;
-  background-color: #dcfce7;
-  border: 1px solid #86efac;
-}
+  color: #ffffff;
+  background-color: #77D79B40;
+  }
 
 /* Error */
 .custom-message.error {
-  color: #991b1b;
-  background-color: #fee2e2;
-  border: 1px solid #fca5a5;
+  color: #ffffff;
+  background-color: #EB656A40;
 }
 
 /* Info */
 .custom-message.info {
-  color: #1e40af;
-  background-color: #dbeafe;
-  border: 1px solid #93c5fd;
+  color: #ffffff;
+  background-color: #33A5E840;
 }
 
 /* Warning */
 .custom-message.warning {
-  color: #92400e;
-  background-color: #fef3c7;
-  border: 1px solid #fcd34d;
+  color: #ffffff;
+  background-color: #F2BA1A40;
 }
 
 /* ── FORM FIELDS ─────────────────────────────────────────────────────── */
@@ -354,7 +360,16 @@ body {
   text-align: center;
 
   border: 1px solid #634e3f;
-  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
 }
 
 /* ── TITLE + TEXT ────────────────────────────── */
@@ -428,20 +443,29 @@ body {
 
 /* ── BACK LINK ───────────────────────────────── */
 .back-to-login {
-  margin-top: 18px;
-  text-align: center;
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .back-to-login a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 14px;
   color: #ffffff;
   text-decoration: none;
 }
 
-.back-to-login a:hover {
+.arrow-icon {
+  width: 8px;
+  height: 14px;
+}
+
+/* .back-to-login a:hover {
   color: #0355e2;
   text-decoration: none;
-}
+} */
 
 /* ── UPDATE PASSWORD PANEL ───────────────────── */
 .right-panel--update-password {
@@ -451,23 +475,61 @@ body {
 /* ── CARD VARIANT ────────────────────────────── */
 .login-card--update {
   width: 500px;
-  padding: 40px;
+  padding: 40px 60px;
   border-radius: 30px;
   text-align: center;
 
   border: 1px solid #634e3f;
-  background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
 }
 
+.login-card--forgot {
+  width: 500px;
+  padding: 40px 60px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
 /* TEXT */
 .login-card--update .title {
-  font-size: 26px;
-  margin-bottom: 10px;
+  font-size: 28px;
+  margin-bottom: 16px;
 }
 
 .login-card--update .subtitle {
-  font-size: 16px;
-  margin-bottom: 28px;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #e9bc19;
+}
+
+.login-card--forgot .title {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.login-card--forgot .subtitle {
+  font-size: 20px;
+  margin-bottom: 20px;
   color: #e9bc19;
 }
 
@@ -530,6 +592,40 @@ body {
 
 .login-card--update .login-btn:hover {
   background: #d4a915;
+}
+
+.footer {
+  width: 100%;
+  background: #191919;
+  margin-top: auto;
+}
+
+.footer-inner {
+  padding: 16px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-link {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus,
+.footer-link:active {
+  color: #E9BC19 !important;
+  text-decoration: none !important;
 }
 
 /* ── LARGE DESKTOP  (≤1280px) ────────────────────────────────────────── */

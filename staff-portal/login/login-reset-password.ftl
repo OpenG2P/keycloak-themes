@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 
-<@layout.registrationLayout bodyClass="openg2p-login" displayInfo=false displayMessage=true; section>
+<@layout.registrationLayout bodyClass="openg2p-login" displayInfo=false displayMessage=false; section>
   <#if section == "form">
 
     <div class="page-wrapper">
@@ -12,7 +12,7 @@
           <h1>Welcome to OpenG2P</h1>
 
           <p class="description">
-            OpenG2P enables governments and humanitarian organisations to deliver critical social benefits directly to those who need them.
+            A one-stop platform to access OpenG2P's modules and functionalities.
           </p>
 
           <button class="contact-btn" onclick="window.open('https://www.openg2p.org/', '_blank')">
@@ -34,16 +34,14 @@
         <div class="login-card login-card--forgot">
 
             <img
-            src="${url.resourcesPath}/img/logo.svg"
-            alt="OpenG2P Logo"
-            class="logo"
+              src="${url.resourcesPath}/img/logo.svg"
+              alt="OpenG2P Logo"
+              class="logo"
             />
 
-            <h2 class="title">Forgot Password</h2>
+            <h2 class="title">Staff Portal</h2>
 
-            <p class="subtitle">
-            Enter your email and we’ll send you a reset link
-            </p>
+            <p class="subtitle">Forgot your password</p>
 
             <form id="kc-reset-password-form" action="${url.loginAction}" method="post">
 
@@ -65,13 +63,16 @@
                 </div>
             </#if>
 
-            <button type="submit" class="login-btn">
-                Send Reset Link
-            </button>
-
             <div class="back-to-login">
-                <a href="${url.loginUrl}">Back to Login</a>
+                <a href="${url.loginUrl}" class="back-link">
+                    <img src="${url.resourcesPath}/img/left_arrow.svg" alt="back" class="arrow-icon" />
+                    <span>Back to Login</span>
+                </a>
             </div>
+
+            <button type="submit" class="login-btn">
+                Submit
+            </button>
 
             <div class="powered-by">
                 <span>Powered by</span>

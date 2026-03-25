@@ -12,7 +12,7 @@
           <h1>Welcome to OpenG2P</h1>
 
           <p class="description">
-            OpenG2P enables governments and humanitarian organisations to deliver critical social benefits directly to those who need them.
+            A one-stop platform to access OpenG2P's modules and functionalities.
           </p>
 
           <button class="contact-btn" onclick="window.open('https://www.openg2p.org/', '_blank')">
@@ -104,4 +104,20 @@
     </div>
 
   </#if>
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        © 2026 OpenG2P.org. All Rights Reserved.
+      </div>
+
+      <div class="footer-right">
+        <a href="https://www.openg2p.org/privacy-policy" class="footer-link" target="_blank" rel="noopener noreferrer">
+          Privacy Policy
+        </a>
+        <a href="https://www.openg2p.org" class="footer-link" target="_blank" rel="noopener noreferrer">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </div>
 </@layout.registrationLayout>
