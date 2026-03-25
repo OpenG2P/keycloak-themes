@@ -1,0 +1,131 @@
+.pf-v5-c-page__sidebar {
+  background-color: #facc15 !important;
+}
+
+.pf-v5-c-nav__link {
+  color: #000 !important;
+}
+
+.pf-v5-c-nav__link.pf-m-current {
+  background-color: #E9BC19 !important;
+  color: #000 !important;
+}
+
+.pf-v5-c-nav__link:hover {
+  background-color: #E9BC19 !important;
+}
+
+.pf-v5-c-masthead {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pf-v5-c-masthead * {
+  color: #000 !important;
+}
+
+.keycloak__pageheader_brand {
+  display: none;
+}
+
+.pf-v5-c-masthead__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.pf-v5-c-masthead__brand::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-image: url('../img/openg2p_logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.pf-v5-c-masthead__brand::after {
+  content: 'Staff Portal';
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content {
+  background-color: #ffffff;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: none;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content .pf-v5-c-toolbar {
+  background-color: transparent;
+  width: 100%;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content #help {
+  display: none !important;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content .pf-v5-c-menu-toggle {
+  background-color: transparent;
+  color: #000;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content .pf-v5-c-menu-toggle svg {
+  fill: #000;
+}
+
+.pf-v5-c-masthead > .pf-v5-c-masthead__content .pf-v5-c-menu-toggle__text {
+  color: #000;
+}
+#help {
+  display: none !important;
+}
+
+.pf-v5-c-masthead.pf-m-display-inline {
+  height: 70px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: #ffffff;
+}
+
+.pf-v5-c-masthead__content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.pf-v5-c-nav__section-title {
+  color: #000000 !important;
+  font-weight: 600 !important;
+  font-size: 16px;
+}
+
+.pf-v5-c-masthead .pf-v5-c-menu-toggle {
+  --pf-v5-c-menu-toggle--before--BorderTopColor: transparent;
+  --pf-v5-c-menu-toggle--before--BorderRightColor: transparent;
+  --pf-v5-c-menu-toggle--before--BorderLeftColor: transparent;
+  --pf-v5-c-menu-toggle--m-full-height__toggle--after--BorderBottomWidth: 0;
+  --pf-v5-c-menu-toggle--before--BorderBottomColor: transparent;
+}
+
+.pf-v5-c-masthead .pf-v5-c-menu-toggle {
+  --pf-v5-c-menu-toggle--after--BorderBottomWidth: 0;
+  --pf-v5-c-menu-toggle--m-expanded--after--BorderBottomWidth: 0;
+}
+
+.pf-v5-c-menu-toggle__text {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+.pf-v5-c-masthead {
+  box-shadow: 0px 4px 10px 0px #00000026;
+}
