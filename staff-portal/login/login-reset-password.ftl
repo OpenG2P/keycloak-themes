@@ -12,11 +12,10 @@
           <h1>Welcome to OpenG2P</h1>
 
           <p class="description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text.
+            OpenG2P enables governments and humanitarian organisations to deliver critical social benefits directly to those who need them.
           </p>
 
-          <button class="contact-btn">
+          <button class="contact-btn" onclick="window.open('https://www.openg2p.org/', '_blank')">
             <span>Get in touch</span>
             <span class="arrow">
               <img src="${url.resourcesPath}/img/arrow.svg" alt="arrow" />
@@ -72,6 +71,15 @@
 
             <div class="back-to-login">
                 <a href="${url.loginUrl}">Back to Login</a>
+            </div>
+
+            <div class="powered-by">
+                <span>Powered by</span>
+                <img
+                  src="${url.resourcesPath}/img/keycloak.svg"
+                  alt="Keycloak"
+                  class="powered-logo"
+                />
             </div>
 
             </form>

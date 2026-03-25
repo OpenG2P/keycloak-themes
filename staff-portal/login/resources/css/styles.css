@@ -177,6 +177,13 @@ body {
   color: #000000;
   border: 1px solid #634e3f;
   background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+  background: radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  );
 }
 
 .logo {
@@ -198,8 +205,46 @@ body {
   font-family: Roboto;
   font-size: 20px;
   font-weight: 500;
-  margin: 0 0 32px 0;
+  margin: 0 0 20px 0;
   color: #e9bc19 !important;
+}
+
+.custom-message {
+  margin: 0 0 16px 0;
+  padding: 10px 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* ✅ Success */
+.custom-message.success {
+  color: #166534;
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+/* ❌ Error */
+.custom-message.error {
+  color: #991b1b;
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+/* ℹ️ Info */
+.custom-message.info {
+  color: #1e40af;
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+/* ⚠️ Warning (NEW) */
+.custom-message.warning {
+  color: #92400e;
+  background-color: #fef3c7;
+  border: 1px solid #fcd34d;
 }
 
 /* ── FORM FIELDS ─────────────────────────────────────────────────────── */
@@ -281,6 +326,21 @@ body {
 
 .login-btn:hover {
   background: #fac504;
+}
+
+.powered-by {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #ffffff; /* subtle gray */
+}
+
+.powered-logo {
+  height: 20px;
+  width: auto;
 }
 
 .right-panel--forgot {
@@ -470,4 +530,285 @@ body {
 
 .login-card--update .login-btn:hover {
   background: #d4a915;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   All original styles above are untouched. Media queries below override
+   only what needs to change at each breakpoint.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── LARGE DESKTOP  (≤1280px) ────────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .content-wrapper {
+    padding: 45px 60px;
+  }
+
+  .left-panel h1 {
+    font-size: 40px;
+  }
+
+  .left-image {
+    width: 380px;
+    height: auto;
+  }
+
+  .login-card {
+    width: 440px;
+    padding: 40px 40px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 440px;
+  }
+
+  .right-panel {
+    padding: 40px 30px;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    padding: 40px 30px;
+  }
+}
+
+/* ── TABLET LANDSCAPE  (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .content-wrapper {
+    padding: 40px 40px;
+    gap: 24px;
+  }
+
+  .left-panel h1 {
+    font-size: 34px;
+  }
+
+  .description {
+    font-size: 15px;
+    max-width: 400px;
+  }
+
+  .left-image {
+    width: 300px;
+    height: auto;
+  }
+
+  .login-card {
+    width: 400px;
+    padding: 36px 32px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 400px;
+    padding: 36px 32px;
+  }
+
+  .right-panel {
+    padding: 24px 16px;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    padding: 24px 16px;
+  }
+}
+
+/* ── TABLET PORTRAIT  (≤768px) ───────────────────────────────────────── */
+/* Stack layout: left panel on top, login card below */
+@media (max-width: 768px) {
+  .page-wrapper {
+    align-items: flex-start;
+  }
+
+  .content-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+    gap: 32px;
+  }
+
+  /* Left panel: centre-align content on mobile */
+  .left-panel {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .left-panel h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .description {
+    font-size: 15px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .contact-btn {
+    margin-bottom: 28px;
+  }
+
+  /* Hide the large illustration on tablet portrait & below to save space */
+  .left-image {
+    display: none;
+  }
+
+  /* Right panel: full width, no extra padding */
+  .right-panel {
+    width: 100%;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Cards: stretch to fill available width with a max cap */
+  .login-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 100%;
+    max-width: 480px;
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .login-card--forgot .title,
+  .login-card--update .title {
+    font-size: 22px;
+  }
+
+  .login-card--forgot .subtitle,
+  .login-card--update .subtitle {
+    font-size: 15px;
+  }
+}
+
+/* ── MOBILE  (≤480px) ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 28px 16px;
+    gap: 24px;
+  }
+
+  .left-panel h1 {
+    font-size: 26px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .contact-btn {
+    width: 150px;
+    height: 48px;
+    font-size: 14px;
+    padding: 6px 6px 6px 16px;
+  }
+
+  .contact-btn .arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .contact-btn .arrow img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .field label {
+    font-size: 14px;
+  }
+
+  .field input {
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .login-btn {
+    font-size: 15px;
+    padding: 13px;
+  }
+
+  .forgot-password-link {
+    font-size: 14px;
+  }
+
+  .powered-by {
+    font-size: 14px;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 16px;
+  }
+}
+
+/* ── VERY SMALL MOBILE  (≤360px) ─────────────────────────────────────── */
+@media (max-width: 360px) {
+  .content-wrapper {
+    padding: 20px 12px;
+  }
+
+  .left-panel h1 {
+    font-size: 22px;
+  }
+
+  .login-card {
+    padding: 24px 16px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    padding: 24px 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
 }

@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 
-<@layout.registrationLayout bodyClass="openg2p-login" displayInfo=false displayMessage=true; section>
+<@layout.registrationLayout bodyClass="openg2p-login" displayInfo=false displayMessage=false; section>
   <#if section == "form">
 
     <div class="page-wrapper">
@@ -12,11 +12,10 @@
           <h1>Welcome to OpenG2P</h1>
 
           <p class="description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text.
+            OpenG2P enables governments and humanitarian organisations to deliver critical social benefits directly to those who need them.
           </p>
 
-          <button class="contact-btn">
+          <button class="contact-btn" onclick="window.open('https://www.openg2p.org/', '_blank')">
             <span>Get in touch</span>
             <span class="arrow">
               <img src="${url.resourcesPath}/img/arrow.svg" alt="arrow" />
@@ -45,6 +44,12 @@
             <p class="subtitle">
             Enter your new password below
             </p>
+
+            <#if message?has_content>
+              <div class="custom-message ${message.type}">
+                ${kcSanitize(message.summary)?no_esc}
+              </div>
+            </#if>
 
             <form id="kc-update-password-form" action="${url.loginAction}" method="post">
 
@@ -83,6 +88,15 @@
             <button type="submit" class="login-btn">
                 Update Password
             </button>
+
+            <div class="powered-by">
+                <span>Powered by</span>
+                <img
+                  src="${url.resourcesPath}/img/keycloak.svg"
+                  alt="Keycloak"
+                  class="powered-logo"
+                />
+            </div>
 
             </form>
 
