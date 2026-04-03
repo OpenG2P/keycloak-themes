@@ -10,7 +10,7 @@
     <!-- OR dynamic -->
     <!-- <title>${msg("loginTitle", "Staff Portal")}</title> -->
 
-    <link rel="icon" href="${url.resourcesPath}/img/logo.svg" />
+    <link rel="icon" href="${url.resourcesPath}/img/favicon.png" type="image/png" />
 
     <!-- Keycloak default styles -->
     <#if properties.styles?has_content>
