@@ -21,7 +21,7 @@
 }
 
 .pf-c-page__header-brand-link a::after {
-  content: 'OpenG2P Admin';
+  content: 'Admin';
   color: #ffffff;
   font-size: 20px;
   font-weight: 600;
