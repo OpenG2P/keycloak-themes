@@ -7,6 +7,19 @@
   align-items: center;
 }
 
+.pf-c-page__header-brand-link a img,
+.pf-c-page__header-brand-link a svg {
+  display: none !important;
+}
+
+.pf-c-page__header-brand-link a::before {
+  content: '';
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  background: url('../img/openg2p-logo.png') no-repeat center / contain;
+}
+
 .pf-c-page__header-brand-link a::after {
   content: 'Staff Portal';
   color: #ffffff;
