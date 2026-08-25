@@ -12,8 +12,11 @@
 #   CI/CD -> Pipelines -> "New pipeline" (older GitLab calls it "Run pipeline"),
 #   pick the branch, and fill in the INPUTS the form shows:
 #       g2p_version = g2p2
+#       change_note = Refreshed the staff-portal login theme.
 #   `g2p_version` has no default, so GitLab will not let the pipeline start
-#   without it -- the tag is always a deliberate choice.
+#   without it -- the tag is always a deliberate choice. `change_note` is what
+#   the catalogue shows as this tag's release notes; it may be left blank, in
+#   which case the page carries only the commit list.
 #
 # WHY `spec:inputs` AND NOT A CI/CD VARIABLE
 #   The "New pipeline" form renders inputs declared here. A plain CI/CD variable
@@ -33,6 +36,13 @@ spec:
         OpenG2P tag suffix for this build, as `g2pN` (e.g. g2p2). The published
         image is <BASE_TAG>-<g2p_version>. Pick the next unused number: existing
         tags are rollback points and are never overwritten.
+    change_note:
+      description: >-
+        What changed in this build, in your own words. Published verbatim as the
+        "Release notes" section of this tag's page in the versions catalogue --
+        the same role an annotated tag message plays for the SemVer repos.
+        Markdown and multiple lines are fine.
+      default: ""
     allow_overwrite:
       description: >-
         Replace the tag if it already exists on Docker Hub. Leave false unless
@@ -51,9 +61,19 @@ variables:
   # never be overwritten"). The GitHub workflow had this check commented out; it is
   # enforced here. Set the allow_overwrite input to deliberately replace a tag.
   ALLOW_OVERWRITE: "$[[ inputs.allow_overwrite ]]"
+  CHANGE_NOTE: "$[[ inputs.change_note ]]"
   # Supply-chain guard, same as every other OpenG2P project: a fork lives under a
   # different root namespace and must not build or push with our credentials.
   PIPELINE_NAMESPACE: "openg2p"
+
+  # ---- catalogue (openg2p/versions). Inherited from the group CI/CD variables like
+  # every other project; named here so this file documents what it depends on.
+  PACKAGING_PROJECT: "openg2p/packaging"
+  PACKAGING_REF: "v1"
+  CHANGELOG_PROJECT: ""              # group variable -> openg2p/versions
+  CHANGELOG_BRANCH: "develop"
+  CHANGELOG_TOKEN: "$CI_JOB_TOKEN"   # group variable -> PAT with write_repository
+  CHANGELOG_SKIP_AI: "false"
 
 workflow:
   rules:
@@ -64,7 +84,7 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "web"'
     - when: never
 
-stages: [build]
+stages: [build, changelog]
 
 build-and-push:
   stage: build
@@ -115,3 +135,103 @@ build-and-push:
         .
       docker push "$REF"
       echo "==> pushed ${REF}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# changelog — record this image tag in the shared catalogue (openg2p/versions).
+#
+# `needs: build-and-push` is the whole point: the catalogue must only ever show tags
+# whose image actually reached Docker Hub. If the build fails, or the overwrite guard
+# rejects the tag, this never runs and no phantom version is recorded.
+#
+# Uses the SAME engine as every other repo (ci/changelog/run.sh from openg2p/packaging),
+# so page shape, AI summary and the root index all match. Only the inputs differ:
+# VERSION is the g2pN docker tag rather than a derived SemVer, and FROZEN=true makes
+# the page durable -- these tags are rollback points and must never age out.
+# ─────────────────────────────────────────────────────────────────────────────
+changelog:
+  stage: changelog
+  needs: ["build-and-push"]
+  resource_group: changelog        # serialise this project's own changelog pushes
+  image: alpine:3.20
+  rules:
+    - if: '$CHANGELOG_PROJECT == ""'
+      when: never
+    - when: on_success
+  before_script:
+    - apk add --no-cache bash git jq curl coreutils grep sed
+    - curl -fsSL https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64 -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+    - git config --global --add safe.directory "$CI_PROJECT_DIR"
+    - git clone --depth 1 --branch "$PACKAGING_REF"
+        "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${PACKAGING_PROJECT}.git" .packaging
+    - git clone --branch "$CHANGELOG_BRANCH"
+        "https://oauth2:${CHANGELOG_TOKEN}@${CI_SERVER_HOST}/${CHANGELOG_PROJECT}.git" changelog-pages
+  script:
+    - |
+      set -euo pipefail
+      cfg=.packaging/ci/changelog/config.yml
+      export OPENROUTER_MODEL="$(yq '.model' "$cfg")"
+      export OPENROUTER_FALLBACKS="$(yq '.fallbacks | join(",")' "$cfg")"
+      export MAX_TOKENS="$(yq '.max_tokens' "$cfg")"
+      export JIRA_BASE="$(yq '.jira_base // ""' "$cfg")"
+      export JIRA_PROJECT="$(yq '.jira_project // ""' "$cfg")"
+
+      # Folder key + display name, derived exactly as the shared wrapper does, so this
+      # project sits in the catalogue alongside the rest: keycloak/keycloak-themes.
+      export REPO_DISPLAY=$(printf '%s' "$CI_PROJECT_PATH" | sed "s#^${CI_PROJECT_ROOT_NAMESPACE}/##")
+      export REPO=$(printf '%s' "$REPO_DISPLAY" | tr '/' '-')
+
+      # The published artefact IS the docker tag; there is no derived SemVer here.
+      export VERSION="${BASE_TAG}-${G2P_VERSION}"
+      export FROZEN=true                       # durable page, never pruned
+      export REVISION="$CI_COMMIT_SHA"
+      export CHANGELOG_KIND=service
+      export PAGES_DIR="${CI_PROJECT_DIR}/changelog-pages"
+      export REPO_URL="$CI_PROJECT_URL"
+      # Images live on Docker Hub, not this project's GitLab registry -- point there.
+      export IMAGES_URL="https://hub.docker.com/r/${IMAGE_NAME}/tags"
+      export COMMIT_PATH="-/commit"
+      export DEFAULT_BRANCH="$CI_DEFAULT_BRANCH"
+      export SKIP_AI="$CHANGELOG_SKIP_AI"
+      export GITHUB_OUTPUT="${CI_PROJECT_DIR}/changelog.out"
+      : > "$GITHUB_OUTPUT"
+      if [ -z "${OPENROUTER_API_KEY:-}" ] && [ "$SKIP_AI" != "true" ]; then
+        echo "OPENROUTER_API_KEY not set; publishing human notes only."; export SKIP_AI=true
+      fi
+
+      # The operator's note becomes the page's "Release notes" block, verbatim.
+      if [ -n "${CHANGE_NOTE:-}" ]; then
+        printf '%s\n' "$CHANGE_NOTE" > "${CI_PROJECT_DIR}/release-notes.md"
+        export RELEASE_NOTES_FILE="${CI_PROJECT_DIR}/release-notes.md"
+      else
+        echo "NOTE: change_note was left blank; the page will carry only the commit list."
+      fi
+
+      DATE="$(date -u +%Y-%m-%d)" bash .packaging/ci/changelog/run.sh
+      grep -q '^published=true' "$GITHUB_OUTPUT" || { echo "nothing to publish"; exit 0; }
+
+      rm -rf /tmp/our_changelog
+      cp -r "${PAGES_DIR}/${REPO}" /tmp/our_changelog
+
+      cd changelog-pages
+      git config user.name "openg2p-bot"; git config user.email "bot@openg2p.org"
+      # Shared branch across every repo, so a concurrent push can reject ours: rebase
+      # onto the tip, reapply OUR folder (unique path -> no conflict), regenerate the
+      # root index, push. Retry with backoff.
+      attempt() {
+        git fetch -q origin "$CHANGELOG_BRANCH" || return 1
+        git reset -q --hard "origin/${CHANGELOG_BRANCH}" || return 1
+        rm -rf "$REPO" || return 1
+        cp -r /tmp/our_changelog "$REPO" || return 1
+        PAGES_DIR="${PAGES_DIR}" bash "${CI_PROJECT_DIR}/.packaging/ci/changelog/render-root-index.sh" || return 1
+        git add -A || return 1
+        if git diff --quiet --cached; then echo "no changelog change"; return 0; fi
+        git commit -q -m "changelog: ${REPO} ${VERSION}" || return 1
+        git push -q origin "HEAD:${CHANGELOG_BRANCH}" || return 1
+        return 0
+      }
+      i=1
+      while [ "$i" -le 5 ]; do
+        if attempt; then echo "changelog published"; exit 0; fi
+        echo "changelog push attempt ${i} failed; retrying"; sleep $((i * 5)); i=$((i + 1))
+      done
+      echo "ERROR: could not publish the changelog after 5 attempts" >&2; exit 1
