@@ -9,22 +9,48 @@
 #   image -> docker.io/openg2p/keycloak:<BASE_TAG>-<G2P_VERSION>
 #
 # HOW TO RUN
-#   CI/CD -> Pipelines -> "Run pipeline", pick the branch, and add ONE variable:
-#       G2P_VERSION = g2p2
-#   That is the GitLab equivalent of the old GitHub `workflow_dispatch` input.
+#   CI/CD -> Pipelines -> "New pipeline" (older GitLab calls it "Run pipeline"),
+#   pick the branch, and fill in the INPUTS the form shows:
+#       g2p_version = g2p2
+#   `g2p_version` has no default, so GitLab will not let the pipeline start
+#   without it -- the tag is always a deliberate choice.
+#
+# WHY `spec:inputs` AND NOT A CI/CD VARIABLE
+#   The "New pipeline" form renders inputs declared here. A plain CI/CD variable
+#   is typed into a free-text box that is easy to miss entirely, which is how a
+#   run reaches the job with no tag at all; an input is a named, required,
+#   validated field the form refuses to submit empty.
 #
 # WHY NO `rules: when: manual` ON THE JOB
 #   A manual JOB still creates a pipeline on every push -- it just waits for a click.
 #   Restricting the WORKFLOW to web-triggered pipelines means a push creates nothing
 #   at all, which is what "only triggered manually" actually means.
 
+spec:
+  inputs:
+    g2p_version:
+      description: >-
+        OpenG2P tag suffix for this build, as `g2pN` (e.g. g2p2). The published
+        image is <BASE_TAG>-<g2p_version>. Pick the next unused number: existing
+        tags are rollback points and are never overwritten.
+    allow_overwrite:
+      description: >-
+        Replace the tag if it already exists on Docker Hub. Leave false unless
+        you are deliberately rebuilding a published tag.
+      type: boolean
+      default: false
+---
+
 variables:
   BASE_TAG: "24.0.5-debian-12-r1"
   IMAGE_NAME: "openg2p/keycloak"
+  # Bound from the pipeline inputs above, so the job body keeps reading plain
+  # environment variables and the shell validation below still applies.
+  G2P_VERSION: "$[[ inputs.g2p_version ]]"
   # Existing tags are rollback points -- see the deployment guide ("existing tags must
   # never be overwritten"). The GitHub workflow had this check commented out; it is
-  # enforced here. Set to "true" on a run to deliberately replace a tag.
-  ALLOW_OVERWRITE: "false"
+  # enforced here. Set the allow_overwrite input to deliberately replace a tag.
+  ALLOW_OVERWRITE: "$[[ inputs.allow_overwrite ]]"
   # Supply-chain guard, same as every other OpenG2P project: a fork lives under a
   # different root namespace and must not build or push with our credentials.
   PIPELINE_NAMESPACE: "openg2p"
@@ -55,9 +81,9 @@ build-and-push:
 
       # Same validation as the GitHub workflow's input check.
       if [ -z "${G2P_VERSION:-}" ]; then
-        echo "ERROR: G2P_VERSION is not set." >&2
-        echo "Run this pipeline from CI/CD -> Pipelines -> Run pipeline, adding a" >&2
-        echo "variable G2P_VERSION with a value like 'g2p2'." >&2
+        echo "ERROR: G2P_VERSION is empty." >&2
+        echo "Run this pipeline from CI/CD -> Pipelines -> New pipeline and fill in" >&2
+        echo "the 'g2p_version' input with a value like 'g2p2'." >&2
         exit 1
       fi
       case "$G2P_VERSION" in
