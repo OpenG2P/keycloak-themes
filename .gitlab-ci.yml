@@ -1,0 +1,91 @@
+# keycloak-themes — MANUAL image build.
+#
+# Deliberately NOT on the central build/publish pipeline. That pipeline derives one
+# immutable SemVer per commit; this artefact is different in kind: a Bitnami Keycloak
+# base with OpenG2P themes baked in, rebuilt only when a theme changes, tagged with a
+# hand-chosen `g2pN` suffix that the operator decides. Nothing here should ever build
+# because someone pushed a commit.
+#
+#   image -> docker.io/openg2p/keycloak:<BASE_TAG>-<G2P_VERSION>
+#
+# HOW TO RUN
+#   CI/CD -> Pipelines -> "Run pipeline", pick the branch, and add ONE variable:
+#       G2P_VERSION = g2p2
+#   That is the GitLab equivalent of the old GitHub `workflow_dispatch` input.
+#
+# WHY NO `rules: when: manual` ON THE JOB
+#   A manual JOB still creates a pipeline on every push -- it just waits for a click.
+#   Restricting the WORKFLOW to web-triggered pipelines means a push creates nothing
+#   at all, which is what "only triggered manually" actually means.
+
+variables:
+  BASE_TAG: "24.0.5-debian-12-r1"
+  IMAGE_NAME: "openg2p/keycloak"
+  # Existing tags are rollback points -- see the deployment guide ("existing tags must
+  # never be overwritten"). The GitHub workflow had this check commented out; it is
+  # enforced here. Set to "true" on a run to deliberately replace a tag.
+  ALLOW_OVERWRITE: "false"
+  # Supply-chain guard, same as every other OpenG2P project: a fork lives under a
+  # different root namespace and must not build or push with our credentials.
+  PIPELINE_NAMESPACE: "openg2p"
+
+workflow:
+  rules:
+    - if: '$CI_PROJECT_ROOT_NAMESPACE != $PIPELINE_NAMESPACE'
+      when: never
+    # ONLY a "Run pipeline" from the UI. Not push, not tag, not merge request,
+    # not schedule -- those create no pipeline whatsoever.
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+stages: [build]
+
+build-and-push:
+  stage: build
+  image: docker:24
+  services: ["docker:24-dind"]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://docker:2376"
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "/certs/client"
+  script:
+    - |
+      set -euo pipefail
+
+      # Same validation as the GitHub workflow's input check.
+      if [ -z "${G2P_VERSION:-}" ]; then
+        echo "ERROR: G2P_VERSION is not set." >&2
+        echo "Run this pipeline from CI/CD -> Pipelines -> Run pipeline, adding a" >&2
+        echo "variable G2P_VERSION with a value like 'g2p2'." >&2
+        exit 1
+      fi
+      case "$G2P_VERSION" in
+        g2p[0-9]|g2p[0-9][0-9]) : ;;
+        *) echo "ERROR: G2P_VERSION must match 'g2pN' (e.g. g2p1, g2p2); got '${G2P_VERSION}'" >&2; exit 1 ;;
+      esac
+
+      TAG="${BASE_TAG}-${G2P_VERSION}"
+      REF="${IMAGE_NAME}:${TAG}"
+      echo "==> building ${REF}"
+
+      # Docker Hub credentials come from project/group CI/CD variables:
+      #   DOCKERHUB_USER, DOCKERHUB_TOKEN   (mask the token)
+      : "${DOCKERHUB_USER:?set DOCKERHUB_USER as a CI/CD variable}"
+      : "${DOCKERHUB_TOKEN:?set DOCKERHUB_TOKEN as a masked CI/CD variable}"
+      echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin docker.io
+
+      # Never silently replace a published tag: deployments pin these for rollback.
+      if [ "${ALLOW_OVERWRITE}" != "true" ] && docker manifest inspect "$REF" >/dev/null 2>&1; then
+        echo "ERROR: ${REF} already exists on Docker Hub." >&2
+        echo "Tags are immutable rollback points -- pick the next g2pN instead." >&2
+        echo "(Deliberate replacement: re-run with ALLOW_OVERWRITE=true.)" >&2
+        exit 1
+      fi
+
+      docker build -t "$REF" \
+        --label org.opencontainers.image.source="${CI_PROJECT_URL}" \
+        --label org.opencontainers.image.revision="${CI_COMMIT_SHA}" \
+        .
+      docker push "$REF"
+      echo "==> pushed ${REF}"
