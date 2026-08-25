@@ -6,7 +6,8 @@
 # hand-chosen `g2pN` suffix that the operator decides. Nothing here should ever build
 # because someone pushed a commit.
 #
-#   image -> docker.io/openg2p/keycloak:<BASE_TAG>-<G2P_VERSION>
+#   image -> $CI_REGISTRY_IMAGE:<BASE_TAG>-<G2P_VERSION>
+#            i.e. registry.gitlab.com/openg2p/keycloak/keycloak-themes:24.0.5-debian-12-r1-g2pN
 #
 # HOW TO RUN
 #   CI/CD -> Pipelines -> "New pipeline" (older GitLab calls it "Run pipeline"),
@@ -19,10 +20,11 @@
 #   which case the page carries only the commit list.
 #
 # WHY `spec:inputs` AND NOT A CI/CD VARIABLE
-#   The "New pipeline" form renders inputs declared here. A plain CI/CD variable
-#   is typed into a free-text box that is easy to miss entirely, which is how a
-#   run reaches the job with no tag at all; an input is a named, required,
-#   validated field the form refuses to submit empty.
+#   The "New pipeline" form renders inputs declared here as named, described
+#   fields, instead of a free-text variable box that is easy to miss entirely.
+#   Every input still carries a default (see g2p_version) -- without one, a push
+#   cannot resolve the config and GitLab records a failed pipeline before
+#   workflow:rules are evaluated. The job body enforces what the form cannot.
 #
 # WHY NO `rules: when: manual` ON THE JOB
 #   A manual JOB still creates a pipeline on every push -- it just waits for a click.
@@ -36,6 +38,14 @@ spec:
         OpenG2P tag suffix for this build, as `g2pN` (e.g. g2p2). The published
         image is <BASE_TAG>-<g2p_version>. Pick the next unused number: existing
         tags are rollback points and are never overwritten.
+      # MUST have a default, even though the value is always supplied by hand.
+      # An input with no default cannot be resolved on a push, and GitLab records
+      # a FAILED pipeline (zero jobs, no YAML error) before workflow:rules are
+      # ever evaluated -- so "manual only" silently became "a red pipeline on
+      # every push". With a default the config always resolves, the workflow rule
+      # runs, and a push creates no pipeline at all. Emptiness is caught by the
+      # shell validation in the job, which fails with an actionable message.
+      default: ""
     change_note:
       description: >-
         What changed in this build, in your own words. Published verbatim as the
@@ -53,7 +63,10 @@ spec:
 
 variables:
   BASE_TAG: "24.0.5-debian-12-r1"
-  IMAGE_NAME: "openg2p/keycloak"
+  # This project's own GitLab Container Registry. CI_REGISTRY_IMAGE is predefined,
+  # so the pipeline stays portable to a self-hosted GitLab with no edits -- and the
+  # job token below already has push rights to it, with no credentials to manage.
+  IMAGE_NAME: "$CI_REGISTRY_IMAGE"
   # Bound from the pipeline inputs above, so the job body keeps reading plain
   # environment variables and the shell validation below still applies.
   G2P_VERSION: "$[[ inputs.g2p_version ]]"
@@ -115,15 +128,13 @@ build-and-push:
       REF="${IMAGE_NAME}:${TAG}"
       echo "==> building ${REF}"
 
-      # Docker Hub credentials come from project/group CI/CD variables:
-      #   DOCKERHUB_USER, DOCKERHUB_TOKEN   (mask the token)
-      : "${DOCKERHUB_USER:?set DOCKERHUB_USER as a CI/CD variable}"
-      : "${DOCKERHUB_TOKEN:?set DOCKERHUB_TOKEN as a masked CI/CD variable}"
-      echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin docker.io
+      # The job token is minted for this job and already authorised to push to THIS
+      # project's registry -- nothing to configure, and nothing to leak.
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
 
       # Never silently replace a published tag: deployments pin these for rollback.
       if [ "${ALLOW_OVERWRITE}" != "true" ] && docker manifest inspect "$REF" >/dev/null 2>&1; then
-        echo "ERROR: ${REF} already exists on Docker Hub." >&2
+        echo "ERROR: ${REF} already exists in the registry." >&2
         echo "Tags are immutable rollback points -- pick the next g2pN instead." >&2
         echo "(Deliberate replacement: re-run with ALLOW_OVERWRITE=true.)" >&2
         exit 1
@@ -187,8 +198,7 @@ changelog:
       export CHANGELOG_KIND=service
       export PAGES_DIR="${CI_PROJECT_DIR}/changelog-pages"
       export REPO_URL="$CI_PROJECT_URL"
-      # Images live on Docker Hub, not this project's GitLab registry -- point there.
-      export IMAGES_URL="https://hub.docker.com/r/${IMAGE_NAME}/tags"
+      export IMAGES_URL="${CI_PROJECT_URL}/container_registry"
       export COMMIT_PATH="-/commit"
       export DEFAULT_BRANCH="$CI_DEFAULT_BRANCH"
       export SKIP_AI="$CHANGELOG_SKIP_AI"
