@@ -2,4 +2,5 @@ FROM openg2p/keycloak:24.0.5-debian-12-r1
 
 COPY g2p-advisor /opt/bitnami/keycloak/themes/g2p-advisor
 COPY staff-portal /opt/bitnami/keycloak/themes/staff-portal
+COPY agent-portal /opt/bitnami/keycloak/themes/agent-portal
 COPY openg2p-admin /opt/bitnami/keycloak/themes/openg2p-admin
