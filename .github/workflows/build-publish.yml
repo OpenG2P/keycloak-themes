@@ -1,0 +1,153 @@
+name: Build & Publish
+
+# keycloak-themes — MANUAL image build.
+#
+# Deliberately NOT on the central build/publish pipeline. That pipeline derives one
+# immutable SemVer per commit; this artefact is different in kind: a Bitnami Keycloak
+# base with OpenG2P themes baked in, rebuilt only when a theme changes, tagged with a
+# hand-chosen `g2pN` suffix that the operator decides.
+#
+#   image -> docker.io/openg2p/keycloak:<BASE_TAG>-<g2p_version>
+#
+# `workflow_dispatch` with no push trigger IS the "manual only" guarantee on GitHub:
+# a push creates no run at all.
+
+on:
+  workflow_dispatch:
+    inputs:
+      g2p_version:
+        description: 'OpenG2P tag suffix, as g2pN (e.g. g2p2). Published image is <BASE_TAG>-<g2p_version>. Pick the next unused number: existing tags are rollback points and are never overwritten.'
+        required: true
+        type: string
+      change_note:
+        description: 'What changed in this build, in your own words. Published verbatim as this tag''s note in the versions catalogue. Markdown is fine.'
+        required: false
+        type: string
+        default: ''
+      allow_overwrite:
+        description: 'Replace the tag if it already exists on Docker Hub. Leave off unless deliberately rebuilding a published tag.'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  BASE_TAG: "24.0.5-debian-12-r1"
+  IMAGE_NAME: "openg2p/keycloak"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.build.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.docker_hub_actor }}
+          password: ${{ secrets.docker_hub_token }}
+
+      - id: build
+        run: |
+          set -euo pipefail
+          V='${{ inputs.g2p_version }}'
+          case "$V" in
+            g2p[0-9]|g2p[0-9][0-9]) : ;;
+            *) echo "::error::g2p_version must match 'g2pN' (e.g. g2p1, g2p2); got '$V'"; exit 1 ;;
+          esac
+          TAG="${BASE_TAG}-${V}"
+          REF="${IMAGE_NAME}:${TAG}"
+          # Never silently replace a published tag: deployments pin these for rollback.
+          if [ "${{ inputs.allow_overwrite }}" != "true" ] && docker manifest inspect "$REF" >/dev/null 2>&1; then
+            echo "::error::${REF} already exists. Tags are immutable rollback points -- pick the next g2pN, or re-run with allow_overwrite."
+            exit 1
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.build.outputs.ref }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+  changelog:
+    # The catalogue must only ever show tags whose image actually reached Docker Hub.
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    concurrency:
+      group: changelog-${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0, fetch-tags: true }
+      - name: Load changelog scripts
+        uses: actions/checkout@v4
+        with:
+          repository: openg2p/openg2p-packaging
+          ref: v1
+          path: .openg2p-ci
+          sparse-checkout: ci
+      - name: Checkout the catalogue
+        uses: actions/checkout@v4
+        with:
+          repository: openg2p/versions
+          ref: develop
+          path: changelog-pages
+          token: ${{ secrets.OPENG2P_BOT_GITHUB_PAT }}
+          persist-credentials: true
+
+      - name: Build the page
+        env:
+          VERSION: ${{ env.BASE_TAG }}-${{ inputs.g2p_version }}
+          CHANGE_NOTE: ${{ inputs.change_note }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          set -euo pipefail
+          cfg=.openg2p-ci/ci/changelog/config.yml
+          OPENROUTER_MODEL="$(yq '.model' "$cfg")"
+          OPENROUTER_FALLBACKS="$(yq '.fallbacks | join(",")' "$cfg")"
+          MAX_TOKENS="$(yq '.max_tokens' "$cfg")"
+          JIRA_BASE="$(yq '.jira_base // ""' "$cfg")"
+          JIRA_PROJECT="$(yq '.jira_project // ""' "$cfg")"
+          export OPENROUTER_MODEL OPENROUTER_FALLBACKS MAX_TOKENS JIRA_BASE JIRA_PROJECT
+          export REPO="${{ github.event.repository.name }}" REPO_DISPLAY="${{ github.event.repository.name }}"
+          # The published artefact IS the docker tag; there is no derived SemVer here.
+          # FROZEN=true makes the page durable -- these tags are rollback points.
+          export VERSION FROZEN=true REVISION="${{ github.sha }}" CHANGELOG_KIND=service
+          export PAGES_DIR="${{ github.workspace }}/changelog-pages"
+          export REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+          export IMAGES_URL="https://hub.docker.com/r/${IMAGE_NAME}/tags"
+          export COMMIT_PATH="commit" DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          export GITHUB_OUTPUT="${{ github.workspace }}/changelog.out"; : > "$GITHUB_OUTPUT"
+          [ -n "${OPENROUTER_API_KEY:-}" ] || export SKIP_AI=true
+          if [ -n "${CHANGE_NOTE}" ]; then
+            printf '%s\n' "${CHANGE_NOTE}" > "${{ github.workspace }}/note.md"
+            export RELEASE_NOTES_FILE="${{ github.workspace }}/note.md"
+          fi
+          DATE="$(date -u +%Y-%m-%d)" bash .openg2p-ci/ci/changelog/run.sh
+
+      - name: Publish the page
+        working-directory: changelog-pages
+        env:
+          VERSION: ${{ env.BASE_TAG }}-${{ inputs.g2p_version }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          git config user.name "openg2p-bot"; git config user.email "bot@openg2p.org"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin develop || { sleep 5; continue; }
+            git stash -q --include-untracked || true
+            git reset -q --hard origin/develop
+            git stash pop -q 2>/dev/null || true
+            git add -A
+            if git diff --quiet --cached; then
+              [ "$i" -eq 1 ] && { echo "no changelog change"; exit 0; }
+              echo "::error::changelog changes were lost between attempts"; exit 1
+            fi
+            git commit -q -m "changelog: ${REPO} ${VERSION}"
+            git push -q origin HEAD:develop && exit 0
+            echo "::warning::changelog push rejected (attempt $i), retrying"; sleep $(( RANDOM % 10 + 5 ))
+          done
+          echo "::error::could not publish the changelog after 5 attempts"; exit 1
