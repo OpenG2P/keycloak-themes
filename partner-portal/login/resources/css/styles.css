@@ -1,0 +1,903 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&family=Roboto+Slab:wght@600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── RESET KEYCLOAK / PATTERNFLY ─────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+  background: #000000;
+  color: #ffffff;
+}
+
+#kc-header,
+#kc-header-wrapper,
+.login-pf-header,
+.login-pf-page-header,
+#kc-page-title,
+.kc-logo-text {
+  display: none !important;
+}
+
+.login-pf-page-header::before,
+.login-pf-page-header::after {
+  display: none !important;
+}
+
+.login-pf-page {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.login-pf {
+  padding-top: 0 !important;
+  background: #000000 !important;
+}
+
+.card-pf {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+#kc-content,
+#kc-content-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ── PAGE WRAPPER ────────────────────────────────────────────────────── */
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #000000;
+}
+
+/* ── CONTENT WRAPPER ────────────────────────────────────────────────── */
+
+.content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 45px 120px;
+}
+
+/* ── LEFT PANEL ─────────────────────────────────────────────────────── */
+
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.left-panel h1 {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 100%;
+  letter-spacing: 0;
+  margin: 0 0 24px 0;
+  color: #ffffff;
+}
+
+.description {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 32px 0;
+  max-width: 520px;
+  color: #ffffff;
+  opacity: 0.7;
+}
+
+/* ── GET IN TOUCH BUTTON ─────────────────────────────────────────────── */
+.contact-btn {
+  width: 166px;
+  height: 52px;
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  background: #e9bc19;
+  border: none;
+
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+
+  color: #000000;
+  cursor: pointer;
+  margin-bottom: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Arrow circle */
+.contact-btn .arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVG image */
+.contact-btn .arrow img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* ── ILLUSTRATION IMAGE ──────────────────────────────────────────────── */
+
+.left-image {
+  width: 490px;
+  height: 377px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── RIGHT PANEL ─────────────────────────────────────────────────────── */
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 65px;
+}
+
+/* ── LOGIN CARD ──────────────────────────────────────────────────────── */
+
+.login-card {
+  width: 500px;
+  padding: 40px 60px;
+  border-radius: 30px;
+  text-align: center;
+  color: #000000;
+  border: 1px solid #634e3f;
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+  background: radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+.logo {
+  width: 46px;
+  height: 46px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.title {
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 20px 0;
+  color: #e9bc19 !important;
+}
+
+.custom-message {
+  margin: 0 0 16px 0;
+  padding: 10px 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* Success */
+.custom-message.success {
+  color: #ffffff;
+  background-color: #77D79B40;
+  }
+
+/* Error */
+.custom-message.error {
+  color: #ffffff;
+  background-color: #EB656A40;
+}
+
+/* Info */
+.custom-message.info {
+  color: #ffffff;
+  background-color: #33A5E840;
+}
+
+/* Warning */
+.custom-message.warning {
+  color: #ffffff;
+  background-color: #F2BA1A40;
+}
+
+/* ── FORM FIELDS ─────────────────────────────────────────────────────── */
+
+.field {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.field label {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 3px;
+  display: block;
+  color: #ffffff;
+}
+
+.field input {
+  width: 100%;
+  height: 50px;
+  padding: 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  font-family: Roboto;
+  font-weight: 400;
+  font-size: 16px;
+  background: #ffffff;
+  color: #000000;
+
+  outline: none;
+  box-shadow: none !important;
+}
+
+.forgot-password-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.forgot-password-link {
+  font-family: Roboto;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.forgot-password-link:hover {
+  color: #0084ff;
+  text-decoration: none;
+}
+
+.forgot-password-link:focus,
+.forgot-password-link:active,
+.forgot-password-link:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ── LOGIN BUTTON ────────────────────────────────────────────────────── */
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: #e9bc19;
+  color: #000000;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.login-btn:hover {
+  background: #fac504;
+}
+
+.powered-by {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.powered-logo {
+  height: 20px;
+  width: auto;
+}
+
+.right-panel--forgot {
+  padding: 40px 65px;
+}
+
+.login-card--forgot {
+  width: 500px;
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+/* ── TITLE + TEXT ────────────────────────────── */
+.login-card--forgot .title {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.login-card--forgot .subtitle {
+  font-size: 16px;
+  margin-bottom: 28px;
+  color: #e9bc19;
+}
+
+/* ── FIELD ───────────────────────────────────── */
+.login-card--forgot .field {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.login-card--forgot .field label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
+
+.login-card--forgot .field input {
+  width: 100%;
+  height: 50px;
+  padding: 14px 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
+
+  font-size: 14px;
+  outline: none;
+}
+
+/* ── ERROR ───────────────────────────────────── */
+.field-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 12px;
+}
+
+/* ── BUTTON ──────────────────────────────────── */
+.login-card--forgot .login-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+
+  background: #e9bc19;
+  color: #000000;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-card--forgot .login-btn:hover {
+  background: #d4a915;
+}
+
+/* ── BACK LINK ───────────────────────────────── */
+.back-to-login {
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.back-to-login a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.arrow-icon {
+  width: 8px;
+  height: 14px;
+}
+
+/* .back-to-login a:hover {
+  color: #0355e2;
+  text-decoration: none;
+} */
+
+/* ── UPDATE PASSWORD PANEL ───────────────────── */
+.right-panel--update-password {
+  padding: 40px 65px;
+}
+
+/* ── CARD VARIANT ────────────────────────────── */
+.login-card--update {
+  width: 500px;
+  padding: 40px 60px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+
+.login-card--forgot {
+  width: 500px;
+  padding: 40px 60px;
+  border-radius: 30px;
+  text-align: center;
+
+  border: 1px solid #634e3f;
+  /* background: linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%); */
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    rgba(233, 188, 25, 0.4) 0%,
+    rgba(233, 188, 25, 0.25) 25%,
+    rgba(233, 188, 25, 0.12) 40%,
+    transparent 55%
+  ),
+  linear-gradient(231.5deg, #1c1c1c 5.69%, #000000 94.31%);
+}
+/* TEXT */
+.login-card--update .title {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.login-card--update .subtitle {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #e9bc19;
+}
+
+.login-card--forgot .title {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.login-card--forgot .subtitle {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #e9bc19;
+}
+
+/* FIELDS */
+.login-card--update .field {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.login-card--update .field label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ffffff;
+}
+
+.login-card--update .field input {
+  width: 100%;
+  height: 50px;
+  padding: 14px 16px;
+  border-radius: 10px;
+
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
+
+  font-size: 14px;
+  outline: none;
+}
+
+.login-card--update .field input:focus {
+  border-color: #e9bc19;
+}
+
+/* ERROR */
+.login-card--update .field-error {
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: left;
+  margin-top: -10px;
+  margin-bottom: 12px;
+}
+
+/* BUTTON */
+.login-card--update .login-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+
+  background: #e9bc19;
+  color: #000000;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-card--update .login-btn:hover {
+  background: #d4a915;
+}
+
+.footer {
+  width: 100%;
+  background: #191919;
+  margin-top: auto;
+}
+
+.footer-inner {
+  padding: 16px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.footer-right {
+  display: flex;
+  gap: 30px;
+}
+
+.footer-link {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus,
+.footer-link:active {
+  color: #E9BC19 !important;
+  text-decoration: none !important;
+}
+
+/* ── LARGE DESKTOP  (≤1280px) ────────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .content-wrapper {
+    padding: 45px 60px;
+  }
+
+  .left-panel h1 {
+    font-size: 40px;
+  }
+
+  .left-image {
+    width: 380px;
+    height: auto;
+  }
+
+  .login-card {
+    width: 440px;
+    padding: 40px 40px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 440px;
+  }
+
+  .right-panel {
+    padding: 40px 30px;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    padding: 40px 30px;
+  }
+}
+
+/* ── TABLET LANDSCAPE  (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .content-wrapper {
+    padding: 40px 40px;
+    gap: 24px;
+  }
+
+  .left-panel h1 {
+    font-size: 34px;
+  }
+
+  .description {
+    font-size: 15px;
+    max-width: 400px;
+  }
+
+  .left-image {
+    width: 300px;
+    height: auto;
+  }
+
+  .login-card {
+    width: 400px;
+    padding: 36px 32px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 400px;
+    padding: 36px 32px;
+  }
+
+  .right-panel {
+    padding: 24px 16px;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    padding: 24px 16px;
+  }
+}
+
+/* ── TABLET PORTRAIT  (≤768px) ───────────────────────────────────────── */
+/* Stack layout: left panel on top, login card below */
+@media (max-width: 768px) {
+  .page-wrapper {
+    align-items: flex-start;
+  }
+
+  .content-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+    gap: 32px;
+  }
+
+  /* Left panel: centre-align content on mobile */
+  .left-panel {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .left-panel h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .description {
+    font-size: 15px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .contact-btn {
+    margin-bottom: 28px;
+  }
+
+  /* Hide the large illustration on tablet portrait & below to save space */
+  .left-image {
+    display: none;
+  }
+
+  /* Right panel: full width, no extra padding */
+  .right-panel {
+    width: 100%;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .right-panel--forgot,
+  .right-panel--update-password {
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Cards: stretch to fill available width with a max cap */
+  .login-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    width: 100%;
+    max-width: 480px;
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  .login-card--forgot .title,
+  .login-card--update .title {
+    font-size: 22px;
+  }
+
+  .login-card--forgot .subtitle,
+  .login-card--update .subtitle {
+    font-size: 15px;
+  }
+}
+
+/* ── MOBILE  (≤480px) ────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 28px 16px;
+    gap: 24px;
+  }
+
+  .left-panel h1 {
+    font-size: 26px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .contact-btn {
+    width: 150px;
+    height: 48px;
+    font-size: 14px;
+    padding: 6px 6px 6px 16px;
+  }
+
+  .contact-btn .arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .contact-btn .arrow img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .field label {
+    font-size: 14px;
+  }
+
+  .field input {
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .login-btn {
+    font-size: 15px;
+    padding: 13px;
+  }
+
+  .forgot-password-link {
+    font-size: 14px;
+  }
+
+  .powered-by {
+    font-size: 14px;
+  }
+
+  .logo {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 16px;
+  }
+}
+
+/* ── VERY SMALL MOBILE  (≤360px) ─────────────────────────────────────── */
+@media (max-width: 360px) {
+  .content-wrapper {
+    padding: 20px 12px;
+  }
+
+  .left-panel h1 {
+    font-size: 22px;
+  }
+
+  .login-card {
+    padding: 24px 16px;
+  }
+
+  .login-card--forgot,
+  .login-card--update {
+    padding: 24px 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+}
